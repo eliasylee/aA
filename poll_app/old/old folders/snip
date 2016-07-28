@@ -1,0 +1,4 @@
+def dfs(target_value)
+  return self if @value == target_value
+  @children.each { |child| child.dfs(target_value) }
+end
