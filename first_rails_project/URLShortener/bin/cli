@@ -1,0 +1,49 @@
+puts "Type in your E-Mail."
+print '> '
+email = gets.chomp
+
+if User.exists?(email: email)
+  current = User.all.where("email = '#{email}'").last
+else
+  User.create!({email: email})
+  current = User.last
+end
+
+puts "Options:"
+puts "CREATE shortened URL"
+puts "VISIT shortened URL"
+print '> '
+action = gets.chomp
+
+if action.downcase == 'create'
+  puts "What's your long URL!??!?!"
+  print '> '
+  long_url = gets.chomp
+
+  if ShortenedURL.exists?(long_url: long_url)
+    short_url_object = ShortenedURL.all.where("long_url = '#{long_url}'")
+  else
+    ShortenedURL.create_for_user_and_long_url!(current, long_url)
+    short_url_object = current.submitted_urls
+  end
+
+  puts "Your short URL is... "
+  sleep(2)
+  puts "..."
+  sleep(1)
+  puts "..."
+  puts short_url_object.last.short_url
+else
+  puts "What is your short URL?!?!?!?!?!?"
+  print "> "
+  short_url = gets.chomp
+
+  short_object = ShortenedURL.all.where("short_url = '#{short_url}'").last
+  Visit.record_visit!(current, short_object)
+
+  puts "Launching >:( #{short_object.long_url}"
+
+  Launchy.open short_object.long_url
+end
+
+puts "Good riddance! >:("
