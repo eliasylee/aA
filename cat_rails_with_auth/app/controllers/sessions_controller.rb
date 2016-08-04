@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
     if user
       login_user!(user)
     else
-      flash.now[:error] ||= []
+      flash.now[:errors] ||= []
       flash.now[:errors] += user.errors.full_messages
       render :new
     end
