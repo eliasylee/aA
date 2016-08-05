@@ -14,13 +14,18 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     @comment.user_id = current_user.id
     @comment.post_id = params[:post_id]
-
+    
     if @comment.save
       redirect_to post_url(@comment.post)
     else
       flash[:errors] = @comment.errors.full_messages
       redirect_to post_url(@comment.post_id)
     end
+  end
+
+  def show
+    @cmt = Comment.find(params[:id])
+    @comment = Comment.new
   end
 
   def edit
@@ -43,7 +48,7 @@ class CommentsController < ApplicationController
 
   private
   def comment_params
-    params.require(:comment).permit(:content)
+    params.require(:comment).permit(:content, :parent_comment_id)
   end
 
   def author_redir

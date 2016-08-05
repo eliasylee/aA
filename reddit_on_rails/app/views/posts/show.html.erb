@@ -14,17 +14,18 @@
   <%= button_to "Edit Post", edit_post_url(@post), method: :get %>
 <% end %>
 
-<%= render "comments/form", comment: Comment.new %>
+<%= render "comments/form", comment: Comment.new, cmt: @cmt %>
 
 <ul>
-  <% @post.comments.each do |comment| %>
-    <li><%= comment.user.username %>
-      <br>
-    <%= comment.content %></li>
+  <% @post.comments.where(parent_comment_id: nil).each do |comment| %>
+  <li><%= comment.user.username %>
     <br>
-    <% if current_user.id = comment.user_id %>
-      <%= button_to "Edit Comment", edit_comment_url(comment), method: :get %>
-      <%= button_to "Delete Comment", comment_url(comment), method: :delete %>
-    <% end %>
+  <%= comment.content %></li>
+  <%= link_to "permalink", post_comment_url(@post, comment) %>
+  <% if current_user.id = comment.user_id %>
+    <%= button_to "Edit Comment", edit_comment_url(comment), method: :get %>
+    <%= button_to "Delete Comment", comment_url(comment), method: :delete %>
+  <% end %>
+    <%= render 'comment', comment: comment %>
   <% end %>
 </ul>
