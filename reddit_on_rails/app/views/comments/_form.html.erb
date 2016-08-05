@@ -1,0 +1,16 @@
+<% action = comment.persisted? ? :patch : :post %>
+<% path = comment.persisted? ? comment_url(comment) : post_comments_url(params[:id])%>
+<% message = comment.persisted? ? "Edit Comment" : "Submit Comment"%>
+
+
+<form action="<%= path %>" method="post">
+  <input type="hidden" name="_method" value="<%= action %>">
+  <%= auth_token %>
+
+  <label>
+    Comment:
+    <textarea name="comment[content]" rows="8" cols="40"><%= comment.content %></textarea>
+  </label>
+
+  <input type="submit" value="<%= message %>">
+</form>

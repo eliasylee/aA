@@ -1,0 +1,20 @@
+<h1> <%= @sub.title %> </h1>
+
+<% if @sub.mod_id == current_user.id %>
+  <%= button_to "Edit Sub", edit_sub_url, method: :get %>
+<% end %>
+
+<p>
+  <%= @sub.description %>
+</p>
+
+<% @sub.posts.each do |post| %>
+  <% if post.url.empty? %>
+    <%= link_to post.title, post_url(post) %>
+  <% else %>
+    <%= link_to post.title, post.url %>
+  <% end %>
+  <br>
+<% end %>
+
+<%= button_to "New Post", new_post_url, method: :get %>
