@@ -1,0 +1,9 @@
+<font color="purple" size="30"> Meet the Bands</font>
+
+<%= button_to "Submit New Band", new_band_url, method: :get %>
+
+<ul>
+  <% @bands.each do |band| %>
+    <li><%= button_to band.name, band_url(band.id), method: :get %></li>
+  <% end %>
+</ul>

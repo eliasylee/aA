@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MusicApp</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+
+<header>
+  <tr>
+    <td>
+      <% if logged_in? %>
+      <div>
+        <a href=" <%= bands_url %> ">
+          <font color="red" size="50">songCloud</font>
+        </a>
+      </div>
+      <% else %>
+        <div>
+          <font color="red" size="50">songCloud</font>
+        </div>
+      <% end %>
+    </td>
+
+    <td>
+      <div>
+        <% if current_user %>
+          Currently logged in as: <%= current_user.email %>
+        <% end %>
+      </div>
+      <div>
+        <% if logged_in? %>
+          <%= button_to "Sign Out", session_url, method: :delete %>
+        <% else %>
+          <%= button_to "Sign Up", new_user_url, method: :get %>
+          <%= button_to "Sign In", new_session_url, method: :get %>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+</header>
+
+<body>
+
+<% if flash[:errors] %>
+  <% flash[:errors].each do |error| %>
+    <%= error %>
+  <% end %>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>

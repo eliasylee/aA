@@ -1,0 +1,19 @@
+<a href="<%= band_url(@album.band) %>">
+  <font color="orange" size="30"> <%= @album.band.name %> </font>
+</a>
+
+<br>
+
+<font color="green" size="20"> <%= @album.name %> </font>
+
+<%= button_to "Edit Album", edit_band_album_url(params[:id], @album.id), method: :get %>
+
+<%= button_to "Submit New Track", new_album_track_url(params[:id]), method: :get %>
+
+<ul>
+  Tracks:
+  <% @album.tracks.each do |track| %>
+    <li> <%= button_to track.name, track_url(track
+    ), method: :get %> </li>
+  <% end %>
+</ul>

@@ -1,0 +1,20 @@
+<% unless logged_in? %>
+  <h1>Sign-Up Page</h1>
+
+  <form action="<%= users_url %>" method="post">
+    <%= auth_token %>
+
+    <div>
+      <div>
+        <label for="sign_up_email">E-Mail:</label>
+        <input type="text" id="sign_up_email" name="user[email]">
+      </div>
+      <div>
+        <label for="sign_up_password">Password:</label>
+        <input type="text" id="sign_up_password" name="user[password]">
+      </div>
+    </div>
+
+    <input type="submit" value="Submit">
+  </form>
+<% end %>
