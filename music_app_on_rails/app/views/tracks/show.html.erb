@@ -8,9 +8,13 @@
   <font color="green" size="20"> <%= @track.album.name %> </font>
 </a>
 
-<%= button_to "Edit Track", edit_album_track_url(params[:id], @track.id), method: :get %>
-<%= button_to "Delete Track", track_url(params[:id]), method: :delete %>
-
 <h1> <%= @track.name %> </h1>
 
+<%= button_to "Edit Track", edit_album_track_url(params[:id], @track.id), method: :get %>
+<%= button_to "Delete Track", track_url(params[:id]), method: :delete %>
+<br>
+<font size="10">Lyrics:</font>
+<br>
 <%= @track.lyrics %>
+<%= render "/notes/form", track: @track %>
+<%= render "/notes/note", track: @track %>

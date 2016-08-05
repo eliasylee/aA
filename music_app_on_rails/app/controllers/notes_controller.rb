@@ -1,40 +1,26 @@
 class NotesController < ApplicationController
-  def new
-    @note = Note.new
-    render :new
-  end
+  before_action :author?, only: [:destroy]
 
   def create
-    @note = Note.new(:note_params)
-    @note.save
-    redirect_to track_url(@note.track)
-  end
-
-  def edit
-    @note = Note.find_by_id(params[:id])
-    render :edit
-  end
-
-  def update
-    @note = Note.find_by_id(params[:id])
-
-    if @note.update(note_params)
-      redirect_to track_url(@note.track)
-    else
-      flash.now[:errors] = @note.errors.full_messages
-      render :edit
-    end
+    @note = Note.new(note_params)
+    @note.save!
+    redirect_to track_url(params[:track_id])
   end
 
   def destroy
     @note = Note.find_by_id(params[:id])
+
+    if current_user != @note.author
+      render text: "403 FORBIDDEN: You are not this note's author,"
+    end
+
     @note.destroy
-    redirect_to track_url(@note.track)
+    redirect_to track_url(params[:track_id])
   end
 
   private
 
   def note_params
-    params.require(:note).permit(:track_id, :note_id, :body)
+    params.require(:note).permit(:track_id, :user_id, :body)
   end
 end

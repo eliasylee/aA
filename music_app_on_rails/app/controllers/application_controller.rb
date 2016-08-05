@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
     false
   end
 
+  def author?(note)
+    current_user == note.author
+  end
+
   private
 
   def require_login

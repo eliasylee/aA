@@ -14,7 +14,7 @@ class TracksController < ApplicationController
     @track = Track.new(track_params)
 
     if @track.save
-      redirect_to track_url(@track.id)
+      redirect_to track_url(@track)
     else
       fail
       flash.now[:errors] = @track.errors.full_messages
@@ -31,7 +31,7 @@ class TracksController < ApplicationController
     @track = Track.find_by_id(params[:id])
 
     if @track.update(track_params)
-      redirect_to track_url(@track.id)
+      redirect_to track_url(@track)
     else
       flash.now[:errors] = @track.errors.full_messages
       render :edit
