@@ -2,7 +2,11 @@
 <% method = track.persisted? ? "PATCH" : "POST" %>
 <% button = track.persisted? ? "Edit Track" : "Submit Track" %>
 
-<% album_name = Album.find_by_id(params[:album_id]).name %>
+<% if track.album %>
+  <% album_name = track.album.name %>
+<% else %>
+  <% album_name = Album.find_by(params[:album_id]).name %>
+<% end %>
 
 <form action=" <%= action_url %> " method="post">
   <input type="hidden" name="_method" value="<%= method %>">
@@ -26,7 +30,7 @@
       Track Name:
     </div>
     <div>
-      <input type="text" name="track[name]" value="<%= @track.name %>">
+      <input type="text" name="track[name]" value="<%= track.name %>">
     </div>
   </div>
 
@@ -35,13 +39,15 @@
     <input type="radio"
            name="track[bonus]"
            value=true
-           id="track_bonus">
+           id="track_bonus"
+           <%= "checked" if track.bonus == true %> >
 
     <label for="track_regular">Regular</label>
     <input type="radio"
            name="track[bonus]"
            value=false
-           id="track_regular">
+           id="track_regular"
+           <%= "checked" if track.bonus == false %> >
   </div>
 
   <div>
@@ -49,7 +55,7 @@
       Lyrics:
     </div>
     <div>
-      <textarea name="track[lyrics]" rows="8" cols="40"><%=@track.lyrics%></textarea>
+      <textarea name="track[lyrics]" rows="8" cols="40"><%=track.lyrics%></textarea>
     </div>
   </div>
 

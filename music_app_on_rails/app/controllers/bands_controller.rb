@@ -27,17 +27,31 @@ class BandsController < ApplicationController
     end
   end
 
-  def update
-    @band = Band.find_by_id(params[:id])
+  def edit
+    @band = Band.find_by(params[:id])
     render :edit
   end
 
+  def update
+    @band = Band.find_by(params[:id])
+
+    if @band.update(band_params)
+      redirect_to band_url(@band)
+    else
+      flash.now[:errors] = @band.errors.full_messages
+      render :edit
+    end
+  end
+
   def destroy
+    @band = Band.find_by(params[:id])
+    @band.destroy
+    redirect_to bands_url
   end
 
   private
 
   def band_params
-    params.require(:band).permit(:name)
+    params.require(:band).permit(:name, :bonus)
   end
 end

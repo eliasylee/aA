@@ -1,11 +1,12 @@
 <font color="orange" size="30"> <%= @band.name %> </font>
 
 <%= button_to "Edit Band", edit_band_url(params[:id]), method: :get %>
+<%= button_to "Delete Band", band_url(params[:id]), method: :delete %>
 
 <%= button_to "Submit New Album", new_band_album_url(params[:id]), method: :get %>
 
 <ul>
-  Albums:
+  <font size="20"> Albums: </font>
   <% @band.albums.each do |album| %>
     <li> <%= button_to album.name, album_url(album), method: :get %> </li>
   <% end %>
