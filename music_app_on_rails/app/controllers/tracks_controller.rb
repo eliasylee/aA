@@ -33,7 +33,7 @@ class TracksController < ApplicationController
     if @track.update(track_params)
       redirect_to track_url(@track)
     else
-      flash.now[:errors] = @track.errors.full_messages
+      flash.now[:errors] = ["Error"]
       render :edit
     end
   end

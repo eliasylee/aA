@@ -33,7 +33,7 @@ class AlbumsController < ApplicationController
     if @album.update(album_params)
       redirect_to album_url(@album.id)
     else
-      flash.now[:errors] = @album.errors.full_messages
+      flash.now[:errors] = ["Error"]
       render :edit
     end
   end
