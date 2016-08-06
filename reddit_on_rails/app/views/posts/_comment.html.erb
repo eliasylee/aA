@@ -1,4 +1,4 @@
-<% comment.child_comments.each do |child| %>
+<% comments_by_parent_id[comment.id].each do |child| %>
   <ul>
       <li><%= child.user.username %>
         <br>
@@ -8,7 +8,7 @@
         <%= button_to "Edit Comment", edit_comment_url(child), method: :get %>
         <%= button_to "Delete Comment", comment_url(child), method: :delete %>
       <% end %>
-      <%= render 'comment', comment: child %>
+      <%= render 'comment', comment: child, comments_by_parent_id: comments_by_parent_id %>
     </li>
   </ul>
 <% end %>

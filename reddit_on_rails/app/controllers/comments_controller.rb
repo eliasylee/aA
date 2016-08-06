@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     @comment.user_id = current_user.id
     @comment.post_id = params[:post_id]
-    
+
     if @comment.save
       redirect_to post_url(@comment.post)
     else
@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
 
   def show
     @cmt = Comment.find(params[:id])
-    @comment = Comment.new
+    @comment = Comment.new 
   end
 
   def edit

@@ -18,14 +18,14 @@
 
 <ul>
   <% @post.comments.where(parent_comment_id: nil).each do |comment| %>
-  <li><%= comment.user.username %>
+    <li><%= comment.user.username %>
     <br>
-  <%= comment.content %></li>
-  <%= link_to "permalink", post_comment_url(@post, comment) %>
-  <% if current_user.id = comment.user_id %>
-    <%= button_to "Edit Comment", edit_comment_url(comment), method: :get %>
-    <%= button_to "Delete Comment", comment_url(comment), method: :delete %>
-  <% end %>
-    <%= render 'comment', comment: comment %>
+    <%= comment.content %></li>
+    <%= link_to "permalink", post_comment_url(@post, comment) %>
+    <% if current_user.id = comment.user_id %>
+      <%= button_to "Edit Comment", edit_comment_url(comment), method: :get %>
+      <%= button_to "Delete Comment", comment_url(comment), method: :delete %>
+    <% end %>
+    <%= render 'comment', comment: comment, comments_by_parent_id: @comments_by_parent_id %>
   <% end %>
 </ul>
