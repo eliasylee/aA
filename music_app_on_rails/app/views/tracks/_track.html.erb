@@ -5,10 +5,10 @@
 <% if track.album %>
   <% album_name = track.album.name %>
 <% else %>
-  <% album_name = Album.find_by(params[:album_id]).name %>
+  <% album_name = Album.find(params[:album_id]).name %>
 <% end %>
 
-<form action=" <%= action_url %> " method="post">
+<form action="<%= action_url %>" method="post">
   <input type="hidden" name="_method" value="<%= method %>">
   <%= auth_token %>
 
@@ -18,7 +18,7 @@
     </div>
     <select name="track[album_id]" id="album_name" >
       <% Album.all.each do |album| %>
-        <option value=<%= album.id %> <%= "selected" if album.name = album_name %> >
+        <option value=<%= album.id %> <%= "selected" if album.name == album_name %> >
           <%= album.name %>
         </option>
       <% end %>

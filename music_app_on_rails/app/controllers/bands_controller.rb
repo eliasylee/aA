@@ -7,7 +7,7 @@ class BandsController < ApplicationController
   end
 
   def show
-    @band = Band.find_by_id(params[:id])
+    @band = Band.find(params[:id])
     render :show
   end
 
@@ -28,12 +28,12 @@ class BandsController < ApplicationController
   end
 
   def edit
-    @band = Band.find_by(params[:id])
+    @band = Band.find(params[:id])
     render :edit
   end
 
   def update
-    @band = Band.find_by(params[:id])
+    @band = Band.find(params[:id])
 
     if @band.update(band_params)
       redirect_to band_url(@band)
@@ -44,7 +44,7 @@ class BandsController < ApplicationController
   end
 
   def destroy
-    @band = Band.find_by(params[:id])
+    @band = Band.find(params[:id])
     @band.destroy
     redirect_to bands_url
   end

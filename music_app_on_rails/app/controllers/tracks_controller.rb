@@ -2,7 +2,7 @@ class TracksController < ApplicationController
   before_action :require_login
 
   def show
-    @track = Track.find_by_id(params[:id])
+    @track = Track.find(params[:id])
   end
 
   def new
@@ -16,19 +16,18 @@ class TracksController < ApplicationController
     if @track.save
       redirect_to track_url(@track)
     else
-      fail
       flash.now[:errors] = @track.errors.full_messages
       render :new
     end
   end
 
   def edit
-    @track = Track.find_by_id(params[:id])
+    @track = Track.find(params[:id])
     render :edit
   end
 
   def update
-    @track = Track.find_by_id(params[:id])
+    @track = Track.find(params[:id])
 
     if @track.update(track_params)
       redirect_to track_url(@track)
@@ -39,7 +38,7 @@ class TracksController < ApplicationController
   end
 
   def destroy
-    @track = Track.find_by_id(params[:id].to_s)
+    @track = Track.find(params[:id].to_s)
     @track.destroy
     redirect_to album_url(@track.album)
   end

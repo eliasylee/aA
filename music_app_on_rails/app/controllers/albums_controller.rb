@@ -2,7 +2,7 @@ class AlbumsController < ApplicationController
   before_action :require_login
 
   def show
-    @album = Album.find_by_id(params[:id])
+    @album = Album.find(params[:id])
   end
 
   def new
@@ -23,12 +23,12 @@ class AlbumsController < ApplicationController
   end
 
   def edit
-    @album = Album.find_by_id(params[:id])
+    @album = Album.find(params[:id])
     render :edit
   end
 
   def update
-    @album = Album.find_by_id(params[:id])
+    @album = Album.find(params[:id])
 
     if @album.update(album_params)
       redirect_to album_url(@album.id)
@@ -39,7 +39,7 @@ class AlbumsController < ApplicationController
   end
 
   def destroy
-    @album = Album.find_by_id(params[:id].to_s)
+    @album = Album.find(params[:id].to_s)
     @album.destroy
     redirect_to band_url(@album.band)
   end
