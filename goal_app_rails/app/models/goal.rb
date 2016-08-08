@@ -1,6 +1,14 @@
 class Goal < ActiveRecord::Base
-validates :name, :body, :user_id, presence: true
+  validates :name, :body, :user_id, presence: true
 
-belongs_to :user
+  belongs_to :user
+
+  def completed?
+    self.completed
+  end
+
+  def days_left
+    (self.deadline.to_date - Date.today).to_i
+  end
 
 end
