@@ -8,6 +8,11 @@
 </head>
 <body>
 
+<% flash[:errors] ||= [] %>
+<% flash[:errors].each do |error| %>
+  <%= error %>
+<% end %>
+
 <%= yield %>
 
 </body>
