@@ -28,6 +28,7 @@ RSpec.describe UsersController, :type => :controller do
       it "logs in the user" do
         post :create, user: {username: "jack_bruce", password: "password"}
         user = User.find_by_username("jack_bruce")
+
         expect(session[:session_token]).to eq(user.session_token)
       end
 
