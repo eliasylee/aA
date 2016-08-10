@@ -37,7 +37,7 @@ class ControllerBase
   # Raise an error if the developer tries to double render.
   def render_content(content, content_type)
     raise "Error" if already_built_response?
-    @res['Content-Type'] = content_type
+    @res['Content-type'] = content_type
     @res.body = [content]
 
     session.store_session(@res)
