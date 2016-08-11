@@ -8,6 +8,8 @@ require_relative './flash'
 class ControllerBase
   attr_reader :req, :res, :params
 
+  @@protect_from_forgery = false
+
   # Setup the controller
   def initialize(req, res, route_params = {} )
     @req = req
@@ -71,7 +73,40 @@ class ControllerBase
 
   # use this with the router to call action_name (:index, :show, :create...)
   def invoke_action(name)
+    if @req.request_method != "GET" && @@protect_from_forgery
+      check_authenticity_token
+    end
+
     self.send(name)
     render(name) unless already_built_response?
   end
+
+  def form_authenticity_token
+    @token ||= SecureRandom::urlsafe_base64(128)
+
+    res.set_cookie('authenticity_token', {
+      path: '/',
+      value: @token
+      }
+    )
+
+    @token
+  end
+
+  def check_authenticity_token
+    token = @req.cookies['authenticity_token']
+
+    unless token && token == @params['authenticity_token']
+      handle_unverified_request
+    end
+  end
+
+  def self.protect_from_forgery
+    @@protect_from_forgery = true
+  end
+
+  def handle_unverified_request
+    raise "Invalid authenticity token"
+  end
+
 end
