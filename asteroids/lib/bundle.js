@@ -59,6 +59,12 @@
 	    Surrogate.prototype = parentClass.prototype;
 	    childClass.prototype = new Surrogate();
 	    childClass.prototype.constructor = childClass;
+	  },
+
+	  randomVec (length) {
+	    let dx = (Math.random() * length) - 1;
+	    let dy = (Math.random() * length) - 1;
+	    return [dx, dy];
 	  }
 	};
 
@@ -102,11 +108,16 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	const Util = __webpack_require__(1);
+	const MovingObject = __webpack_require__(2);
 
+	function Asteroid(pos) {
+	  let options = { pos: pos,
+	                  color: "d3d3d3",
+	                  radius: 25,
+	                  vel: Util.randomVec()
+	                };
 
-	function Asteroid() {
-	  this.color = "d3d3d3";
-	  this.radius = 25;
+	  new MovingObject(options).bind(this);
 	}
 	Util.inherits(Asteroid, MovingObject);
 
