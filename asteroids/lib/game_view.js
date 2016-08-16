@@ -1,4 +1,4 @@
-const Game = require('./game');
+const Game = require('./game.js');
 
 function GameView (game, ctx) {
   this.game = game;
@@ -6,6 +6,15 @@ function GameView (game, ctx) {
 }
 
 GameView.prototype.start = function () {
-  setInterval(this.game.moveObjects, 20);
-  setInterval(this.game.draw, 20);
-};
+  let gameView = this;
+
+  function step() {
+    gameView.game.draw(gameView.ctx)
+    gameView.game.moveObjects()
+    window.requestAnimationFrame(step)
+  }
+
+  step()
+}
+
+module.exports = GameView;

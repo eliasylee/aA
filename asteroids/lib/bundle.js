@@ -40,87 +40,53 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	const Util = __webpack_require__(1);
-	const MovingObject = __webpack_require__(2);
-	const Asteroid = __webpack_require__(3);
+	const Game = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./game.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	const GameView = __webpack_require__(5);
+
+	document.addEventListener("DOMContentLoaded", function() {
+	  const canvas = document.getElementById("game-canvas");
+	  canvas.height = window.innerHeight;
+	  canvas.width = window.innerWidth;
+
+	  let ctx = canvas.getContext('2d');
+	  let game = new Game(canvas.width, canvas.height);
+
+	  new GameView(game, ctx).start();
+	});
 
 
 /***/ },
-/* 1 */
-/***/ function(module, exports) {
 
-	const Util = {
-	  inherits (childClass, parentClass) {
-	    function Surrogate () {}
-	    Surrogate.prototype = parentClass.prototype;
-	    childClass.prototype = new Surrogate();
-	    childClass.prototype.constructor = childClass;
-	  },
+/***/ 5:
+/***/ function(module, exports, __webpack_require__) {
 
-	  randomVec (length) {
-	    let dx = (Math.random() * length) - 1;
-	    let dy = (Math.random() * length) - 1;
-	    return [dx, dy];
+	const Game = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./game.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	function GameView (game, ctx) {
+	  this.game = game;
+	  this.ctx = ctx;
+	}
+
+	GameView.prototype.start = function () {
+	  let gameView = this;
+
+	  function step() {
+	    gameView.game.draw(gameView.ctx)
+	    gameView.game.moveObjects()
+	    window.requestAnimationFrame(step)
 	  }
-	};
 
-	module.exports = Util;
-
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	function MovingObject (options) {
-	  this.pos = options.pos;
-	  this.vel = options.vel;
-	  this.radius = options.radius;
-	  this.color = options.color;
+	  step()
 	}
 
-	MovingObject.prototype.draw = function (ctx) {
-	  ctx.fillStyle = this.color;
-
-	  ctx.arc(
-	    this.pos[0], //x
-	    this.pos[1], //y
-	    this.radius, //radius
-	    0,
-	    2 * Math.PI,
-	    false
-	  );
-
-	  ctx.fill();
-	};
-
-	MovingObject.prototype.move = function () {
-	  this.pos[0] += this.vel[0];
-	  this.pos[1] += this.vel[1];
-	};
-
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	const Util = __webpack_require__(1);
-	const MovingObject = __webpack_require__(2);
-
-	function Asteroid(pos) {
-	  let options = { pos: pos,
-	                  color: "d3d3d3",
-	                  radius: 25,
-	                  vel: Util.randomVec()
-	                };
-
-	  new MovingObject(options).bind(this);
-	}
-	Util.inherits(Asteroid, MovingObject);
+	module.exports = GameView;
 
 
 /***/ }
-/******/ ]);
+
+/******/ });
