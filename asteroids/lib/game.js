@@ -11,7 +11,7 @@ function Game (xDim, yDim) {
 
 Game.prototype.addAsteroids = function () {
   while (this.asteroids.length < this.NUM_ASTEROIDS) {
-    this.asteroids.push(new Asteroid(this.randomPosition()));
+    this.asteroids.push(new Asteroid(this.randomPosition(), this));
   }
 };
 
@@ -39,19 +39,24 @@ Game.prototype.moveObjects = function() {
 };
 
 Game.prototype.wrap = function (pos) {
-  let curX = pos[0]
-  let curY = pos[1]
+  let curX = pos[0];
+  let curY = pos[1];
 
   if (curX > this.DIM_X) {
-    let curX = 0;
-    let curY = Math.random() * this.DIM_Y;
+    curX = 0;
+    curY = Math.random() * this.DIM_Y;
   } else if (curX < 0) {
-    let curX = this.DIM_X;
-    let curY = Math.random() * this.DIM_Y;
+    curX = this.DIM_X;
+    curY = Math.random() * this.DIM_Y;
   } else if (curY > this.DIM_Y) {
-    let curY = 0;
-    let curX =  = Math.random() * this.DIM_X;
+    curY = 0;
+    curX = Math.random() * this.DIM_X;
+  } else if (curY < 0) {
+    curY = this.DIM_Y;
+    curX = Math.random() * this.DIM_X;
   }
-}
+
+  return [curX, curY];
+};
 
 module.exports = Game;
