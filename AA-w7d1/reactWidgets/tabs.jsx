@@ -9,7 +9,10 @@ class Tabs extends React.Component {
 
   renderTabs() {
     return this.props.panes.map( pane => {
-      return <h1 onClick={this.updateTab.bind(this, pane)}>{pane.title}</h1>;
+      return <h1 key={pane.title}
+                 onClick={this.updateTab.bind(this, pane)}>
+                 {pane.title}
+             </h1>;
     });
   }
 
