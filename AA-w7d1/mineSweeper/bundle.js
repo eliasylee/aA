@@ -54,15 +54,15 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _game = __webpack_require__(172);
+	var _react_minesweeper = __webpack_require__(174);
 	
-	var _game2 = _interopRequireDefault(_game);
+	var _react_minesweeper2 = _interopRequireDefault(_react_minesweeper);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener("DOMContentLoaded", function () {
 		var root = document.querySelector("#root");
-		_reactDom2.default.render(_react2.default.createElement(_game2.default, null), root);
+		_reactDom2.default.render(_react2.default.createElement(_react_minesweeper2.default, null), root);
 	});
 
 /***/ },
@@ -21417,7 +21417,9 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 172 */
+/* 172 */,
+/* 173 */,
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21432,7 +21434,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _minesweeper = __webpack_require__(173);
+	var _minesweeper = __webpack_require__(175);
 	
 	var _minesweeper2 = _interopRequireDefault(_minesweeper);
 	
@@ -21470,7 +21472,7 @@
 	exports.default = Game;
 
 /***/ },
-/* 173 */
+/* 175 */
 /***/ function(module, exports) {
 
 	"use strict";
