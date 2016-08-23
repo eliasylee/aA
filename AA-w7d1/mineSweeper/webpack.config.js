@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./entry.jsx",
+  entry: "./react_minesweeper.jsx",
   output: {
     filename: "./bundle.js"
   },
@@ -17,9 +17,6 @@ module.exports = {
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ["", ".js", ".jsx"],
-    alias: {
-      Minesweeper: './minesweeper'
-    }
+    extensions: ["", ".js", ".jsx"]
   }
 };

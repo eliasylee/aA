@@ -54,15 +54,15 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _react_minesweeper = __webpack_require__(174);
+	var _game = __webpack_require__(172);
 	
-	var _react_minesweeper2 = _interopRequireDefault(_react_minesweeper);
+	var _game2 = _interopRequireDefault(_game);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener("DOMContentLoaded", function () {
 		var root = document.querySelector("#root");
-		_reactDom2.default.render(_react2.default.createElement(_react_minesweeper2.default, null), root);
+		_reactDom2.default.render(_react2.default.createElement(_game2.default, null), root);
 	});
 
 /***/ },
@@ -21417,9 +21417,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 172 */,
-/* 173 */,
-/* 174 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21434,9 +21432,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _minesweeper = __webpack_require__(175);
+	var _board = __webpack_require__(173);
 	
-	var _minesweeper2 = _interopRequireDefault(_minesweeper);
+	var _board2 = _interopRequireDefault(_board);
+	
+	var _minesweeper = __webpack_require__(174);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -21452,16 +21452,23 @@
 	  function Game() {
 	    _classCallCheck(this, Game);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Game).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Game).call(this));
+	
+	    _this.state = { board: new _minesweeper.Board(40, 10) };
+	    _this.updateGame = _this.updateGame.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Game, [{
+	    key: 'updateGame',
+	    value: function updateGame() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'Hey There'
+	        _react2.default.createElement(_board2.default, { board: this.state.board, updateGame: this.updateGame })
 	      );
 	    }
 	  }]);
@@ -21472,7 +21479,87 @@
 	exports.default = Game;
 
 /***/ },
-/* 175 */
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _minesweeper = __webpack_require__(174);
+	
+	var _minesweeper2 = _interopRequireDefault(_minesweeper);
+	
+	var _tile = __webpack_require__(175);
+	
+	var _tile2 = _interopRequireDefault(_tile);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var GameBoard = function (_React$Component) {
+	  _inherits(GameBoard, _React$Component);
+	
+	  function GameBoard(props) {
+	    _classCallCheck(this, GameBoard);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(GameBoard).call(this, props));
+	  }
+	
+	  _createClass(GameBoard, [{
+	    key: 'renderBoard',
+	    value: function renderBoard() {
+	      var _this2 = this;
+	
+	      return this.props.board.grid.map(function (row, index1) {
+	        return _react2.default.createElement(
+	          'div',
+	          { key: index1 },
+	          ' ',
+	          row.map(function (ele, index2) {
+	            return _react2.default.createElement(_tile2.default, { tile: ele,
+	              updateGame: _this2.props.updateGame,
+	              key: index2 });
+	          }),
+	          ' '
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          this.renderBoard()
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return GameBoard;
+	}(_react2.default.Component);
+	
+	exports.default = GameBoard;
+
+/***/ },
+/* 174 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21601,6 +21688,57 @@
 	  Board: Board,
 	  Tile: Tile
 	};
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _minesweeper = __webpack_require__(174);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var GameTile = function (_React$Component) {
+	  _inherits(GameTile, _React$Component);
+	
+	  function GameTile() {
+	    _classCallCheck(this, GameTile);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(GameTile).apply(this, arguments));
+	  }
+	
+	  _createClass(GameTile, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'T'
+	      );
+	    }
+	  }]);
+	
+	  return GameTile;
+	}(_react2.default.Component);
+	
+	exports.default = GameTile;
 
 /***/ }
 /******/ ]);
