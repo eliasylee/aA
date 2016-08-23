@@ -21727,10 +21727,23 @@
 	  _createClass(GameTile, [{
 	    key: 'render',
 	    value: function render() {
+	      var tile = this.props.tile;
+	      var symbol = void 0;
+	
+	      if (tile.bombed) {
+	        symbol = String.fromCharCode(parseInt("1F4A3", 16));
+	      } else if (tile.flagged) {
+	        symbol = String.fromCharCode(parseInt("2691", 16));
+	      } else if (tile.explored) {
+	        symbol = tile.adjacentBombCount();
+	      } else {
+	        symbol = " ";
+	      }
+	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'T'
+	        symbol
 	      );
 	    }
 	  }]);
