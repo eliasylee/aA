@@ -7,8 +7,12 @@ class Api::TodosController < ApplicationController
 
   def create
     @todo = Todo.new(todo_params)
-
-    render json: @todo
+    
+    if @todo.save
+      render json: @todo
+    else
+      render json: @todo.errors
+    end
   end
 
   def update

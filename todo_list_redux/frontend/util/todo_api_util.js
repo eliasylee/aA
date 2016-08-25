@@ -6,3 +6,14 @@ export const fetchTodos = (success, error) => {
     error: error
   });
 };
+
+export const createTodo = (todo, success, error) => {
+  debugger
+  $.ajax({
+    method: 'POST',
+    url: 'api/todos',
+    data: todo,
+    success: success,
+    error: error
+  });
+};
