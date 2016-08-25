@@ -5,5 +5,4 @@ const RootReducer = combineReducers ({
   todos: TodosReducer
 });
 
-
 export default RootReducer;

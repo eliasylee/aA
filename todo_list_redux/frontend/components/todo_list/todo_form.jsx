@@ -3,7 +3,7 @@ import React from 'react';
 class TodoForm extends React.Component {
   constructor() {
     super();
-    this.state = {title: "", body: ""};
+    this.state = {title: "", body: "", done: false};
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleBodyChange = this.handleBodyChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
