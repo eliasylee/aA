@@ -11,6 +11,7 @@ const defaultState = {
 const FilterReducer = ( state = defaultState, action ) => {
   switch (action.type) {
     case FilterConstants.UPDATE_BOUNDS:
+      debugger
       let newFilter = { [action.filter]: action.value };
       let newState = merge({}, state, newFilter );
       return newState;

@@ -12,15 +12,14 @@ class BenchMap extends React.Component {
 
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
     this.MarkerManager = new MarkerManager(this.map);
-    this.MarkerManager.updateMarkers(this.props.benches);
-
-    let latLngBounds;
 
     google.maps.event.addListener(this.map, 'bounds_changed', () => {
       let latLngBounds = this.map.getBounds();
     });
 
     google.maps.event.addListener(this.map, "idle", () => {
+      let map = this.map;
+      let latLngBounds = map.getBounds();
       let northEast = latLngBounds.getNorthEast();
       let southWest = latLngBounds.getSouthWest();
 
@@ -29,7 +28,10 @@ class BenchMap extends React.Component {
         "southWest": { "lat": `${southWest.lat()}`, "lng": `${southWest.lng()}` }
       };
 
+      debugger
+
       this.props.updateBounds('bounds', bounds)
+      this.MarkerManager.updateMarkers(this.props.benches);
     });
   };
 

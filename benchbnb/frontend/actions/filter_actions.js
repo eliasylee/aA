@@ -4,6 +4,6 @@ export const FilterConstants = {
 
 export const updateBounds = (filter, value) => ({
   type: FilterConstants.UPDATE_BOUNDS,
-  filter,
-  value
+  filter: filter,
+  value: value
 })
