@@ -4,7 +4,7 @@ import merge from 'lodash/merge';
 const FilterReducer = ( state = { bounds: {} }, action ) => {
   switch (action.type) {
     case FilterConstants.UPDATE_BOUNDS:
-      return { bounds: action.value }
+      return { bounds: action.bounds }
     default:
       return state;
   }

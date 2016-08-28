@@ -3,10 +3,6 @@ import { requestBenches } from '../actions/bench_actions';
 import BenchIndexItem from './bench_index_item';
 
 class BenchIndex extends React.Component {
-  componentDidMount () {
-    this.props.requestBenches();
-  }
-
   render () {
     const { benches } = this.props;
 

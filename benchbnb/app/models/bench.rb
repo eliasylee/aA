@@ -8,9 +8,9 @@ class Bench < ActiveRecord::Base
       lat = bench.lat
       lng = bench.lng
 
-      if (bounds["northEast"]["lat"].to_i < lat) || (bounds["southWest"]["lat"].to_i > lat)
+      if (bounds["northEast"]["lat"].to_f < lat) || (bounds["southWest"]["lat"].to_f > lat)
         next
-      elsif (bounds["northEast"]["lng"].to_i < lng) || (bounds["southWest"]["lng"].to_i > lng)
+      elsif (bounds["northEast"]["lng"].to_f < lng) || (bounds["southWest"]["lng"].to_f > lng)
         next
       end
 

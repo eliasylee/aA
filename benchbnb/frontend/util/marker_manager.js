@@ -4,22 +4,30 @@ class MarkerManager {
     this.markers = [];
     this.benchesToAdd = this._benchesToAdd.bind(this);
     this.createMarkerFromBench = this._createMarkerFromBench.bind(this);
+    this.markersToRemove = this._markersToRemove.bind(this);
+    this.removeMarker = this._removeMarker.bind(this);
   }
 
   updateMarkers (benches) {
     this.benches = benches;
-    let benchesToAdd = this.benchesToAdd(benches);
+
+    let benchesToAdd = this._benchesToAdd(benches);
     benchesToAdd.forEach( bench => {
-      this.createMarkerFromBench(bench);
-    })
+      this._createMarkerFromBench(bench);
+    });
+
+    let markersToRemove = this._markersToRemove();
+    markersToRemove.forEach( marker => {
+      this._removeMarker(marker);
+    });
   }
 
-  _benchesToAdd (benches) {
+  _benchesToAdd () {
     let mapBenchIds = this.markers.map( marker => marker.benchId )
     let newBenches = [];
 
     this.benches.forEach( bench => {
-      if (!mapBenchIds.includes(bench.id)) {
+      if (!mapBenchIds.includes(bench.id) ) {
         newBenches.push(bench);
       };
     })
@@ -35,18 +43,30 @@ class MarkerManager {
 
     let newMarker = new google.maps.Marker({
       position: markerPos,
-      map: this.map
+      map: this.map,
+      benchId: bench.id
     })
 
     this.markers.push(newMarker);
   }
 
   _markersToRemove () {
-    
+    let persistingMarkers = []
+    let benchIds = this.benches.map( bench => bench.id )
+
+    this.markers.forEach( marker => {
+      if (!benchIds.includes(marker.benchId)) {
+        persistingMarkers.push(marker)
+      }
+    });
+
+    return persistingMarkers;
   }
 
-  _removeMarker () {
-
+  _removeMarker (marker) {
+    let idx = this.markers.indexOf(marker);
+    this.markers[idx].setMap(null);
+    this.markers = this.markers.slice(0, idx).concat(this.markers.slice(idx + 1, this.markers.length));
   }
 }
 

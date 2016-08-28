@@ -60,7 +60,7 @@
 	
 	var _bench_actions = __webpack_require__(189);
 	
-	var _root = __webpack_require__(301);
+	var _root = __webpack_require__(303);
 	
 	var _root2 = _interopRequireDefault(_root);
 	
@@ -21443,7 +21443,7 @@
 	
 	var _root_reducer2 = _interopRequireDefault(_root_reducer);
 	
-	var _root_middleware = __webpack_require__(298);
+	var _root_middleware = __webpack_require__(300);
 	
 	var _root_middleware2 = _interopRequireDefault(_root_middleware);
 	
@@ -22324,7 +22324,7 @@
 	
 	var _benches_reducer2 = _interopRequireDefault(_benches_reducer);
 	
-	var _filter_reducer = __webpack_require__(318);
+	var _filter_reducer = __webpack_require__(298);
 	
 	var _filter_reducer2 = _interopRequireDefault(_filter_reducer);
 	
@@ -22355,7 +22355,6 @@
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	  var action = arguments[1];
 	
-	  var newState = {};
 	  switch (action.type) {
 	    case _bench_actions.BenchConstants.RECEIVE_BENCHES:
 	      return action.benches;
@@ -25723,9 +25722,61 @@
 	  value: true
 	});
 	
+	var _filter_actions = __webpack_require__(299);
+	
+	var _merge = __webpack_require__(190);
+	
+	var _merge2 = _interopRequireDefault(_merge);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var FilterReducer = function FilterReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? { bounds: {} } : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case _filter_actions.FilterConstants.UPDATE_BOUNDS:
+	      return { bounds: action.bounds };
+	    default:
+	      return state;
+	  }
+	};
+	
+	exports.default = FilterReducer;
+
+/***/ },
+/* 299 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var FilterConstants = exports.FilterConstants = {
+	  UPDATE_BOUNDS: "UPDATE_BOUNDS"
+	};
+	
+	var updateBounds = exports.updateBounds = function updateBounds(bounds) {
+	  return {
+	    type: FilterConstants.UPDATE_BOUNDS,
+	    bounds: bounds
+	  };
+	};
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
 	var _redux = __webpack_require__(173);
 	
-	var _benches_middleware = __webpack_require__(299);
+	var _benches_middleware = __webpack_require__(301);
 	
 	var _benches_middleware2 = _interopRequireDefault(_benches_middleware);
 	
@@ -25736,7 +25787,7 @@
 	exports.default = RootMiddleware;
 
 /***/ },
-/* 299 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25747,7 +25798,9 @@
 	
 	var _bench_actions = __webpack_require__(189);
 	
-	var _bench_api_util = __webpack_require__(300);
+	var _filter_actions = __webpack_require__(299);
+	
+	var _bench_api_util = __webpack_require__(302);
 	
 	var BenchesMiddleware = function BenchesMiddleware(_ref) {
 	  var getState = _ref.getState;
@@ -25757,12 +25810,15 @@
 	      switch (action.type) {
 	        case _bench_actions.BenchConstants.REQUEST_BENCHES:
 	          var filters = getState().filters;
-	          debugger;
 	          var success = function success(data) {
 	            return dispatch((0, _bench_actions.receiveBenches)(data));
 	          };
 	          (0, _bench_api_util.fetchBenches)(filters, success);
-	          return next(action);
+	          break;
+	        case _filter_actions.FilterConstants.UPDATE_BOUNDS:
+	          next(action);
+	          dispatch((0, _bench_actions.requestBenches)());
+	          break;
 	        default:
 	          return next(action);
 	      }
@@ -25773,7 +25829,7 @@
 	exports.default = BenchesMiddleware;
 
 /***/ },
-/* 300 */
+/* 302 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25794,7 +25850,7 @@
 	};
 
 /***/ },
-/* 301 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25807,9 +25863,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(302);
+	var _reactRedux = __webpack_require__(304);
 	
-	var _search_container = __webpack_require__(311);
+	var _search_container = __webpack_require__(313);
 	
 	var _search_container2 = _interopRequireDefault(_search_container);
 	
@@ -25828,7 +25884,7 @@
 	exports.default = Root;
 
 /***/ },
-/* 302 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25836,11 +25892,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(303);
+	var _Provider = __webpack_require__(305);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connect = __webpack_require__(306);
+	var _connect = __webpack_require__(308);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -25850,7 +25906,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 303 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -25860,11 +25916,11 @@
 	
 	var _react = __webpack_require__(1);
 	
-	var _storeShape = __webpack_require__(304);
+	var _storeShape = __webpack_require__(306);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _warning = __webpack_require__(305);
+	var _warning = __webpack_require__(307);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -25934,7 +25990,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 304 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25950,7 +26006,7 @@
 	});
 
 /***/ },
-/* 305 */
+/* 307 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25979,7 +26035,7 @@
 	}
 
 /***/ },
-/* 306 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -25991,19 +26047,19 @@
 	
 	var _react = __webpack_require__(1);
 	
-	var _storeShape = __webpack_require__(304);
+	var _storeShape = __webpack_require__(306);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _shallowEqual = __webpack_require__(307);
+	var _shallowEqual = __webpack_require__(309);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _wrapActionCreators = __webpack_require__(308);
+	var _wrapActionCreators = __webpack_require__(310);
 	
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 	
-	var _warning = __webpack_require__(305);
+	var _warning = __webpack_require__(307);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -26011,11 +26067,11 @@
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _hoistNonReactStatics = __webpack_require__(309);
+	var _hoistNonReactStatics = __webpack_require__(311);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _invariant = __webpack_require__(310);
+	var _invariant = __webpack_require__(312);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
@@ -26378,7 +26434,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 307 */
+/* 309 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26409,7 +26465,7 @@
 	}
 
 /***/ },
-/* 308 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26426,7 +26482,7 @@
 	}
 
 /***/ },
-/* 309 */
+/* 311 */
 /***/ function(module, exports) {
 
 	/**
@@ -26482,7 +26538,7 @@
 
 
 /***/ },
-/* 310 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26540,7 +26596,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 311 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26549,17 +26605,17 @@
 	  value: true
 	});
 	
-	var _reactRedux = __webpack_require__(302);
+	var _reactRedux = __webpack_require__(304);
 	
 	var _bench_actions = __webpack_require__(189);
 	
-	var _filter_actions = __webpack_require__(317);
+	var _filter_actions = __webpack_require__(299);
 	
-	var _bench_index = __webpack_require__(312);
+	var _bench_index = __webpack_require__(314);
 	
 	var _bench_index2 = _interopRequireDefault(_bench_index);
 	
-	var _search = __webpack_require__(314);
+	var _search = __webpack_require__(316);
 	
 	var _search2 = _interopRequireDefault(_search);
 	
@@ -26585,7 +26641,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_search2.default);
 
 /***/ },
-/* 312 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26602,7 +26658,7 @@
 	
 	var _bench_actions = __webpack_require__(189);
 	
-	var _bench_index_item = __webpack_require__(313);
+	var _bench_index_item = __webpack_require__(315);
 	
 	var _bench_index_item2 = _interopRequireDefault(_bench_index_item);
 	
@@ -26624,11 +26680,6 @@
 	  }
 	
 	  _createClass(BenchIndex, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.props.requestBenches();
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var benches = this.props.benches;
@@ -26650,7 +26701,7 @@
 	exports.default = BenchIndex;
 
 /***/ },
-/* 313 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26702,7 +26753,7 @@
 	exports.default = BenchIndexItem;
 
 /***/ },
-/* 314 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26715,11 +26766,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _bench_map = __webpack_require__(315);
+	var _bench_map = __webpack_require__(317);
 	
 	var _bench_map2 = _interopRequireDefault(_bench_map);
 	
-	var _bench_index = __webpack_require__(312);
+	var _bench_index = __webpack_require__(314);
 	
 	var _bench_index2 = _interopRequireDefault(_bench_index);
 	
@@ -26744,7 +26795,7 @@
 	exports.default = Search;
 
 /***/ },
-/* 315 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26763,7 +26814,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _marker_manager = __webpack_require__(316);
+	var _marker_manager = __webpack_require__(318);
 	
 	var _marker_manager2 = _interopRequireDefault(_marker_manager);
 	
@@ -26831,7 +26882,7 @@
 	exports.default = BenchMap;
 
 /***/ },
-/* 316 */
+/* 318 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26852,6 +26903,8 @@
 	    this.markers = [];
 	    this.benchesToAdd = this._benchesToAdd.bind(this);
 	    this.createMarkerFromBench = this._createMarkerFromBench.bind(this);
+	    this.markersToRemove = this._markersToRemove.bind(this);
+	    this.removeMarker = this._removeMarker.bind(this);
 	  }
 	
 	  _createClass(MarkerManager, [{
@@ -26860,14 +26913,20 @@
 	      var _this = this;
 	
 	      this.benches = benches;
-	      var benchesToAdd = this.benchesToAdd(benches);
+	
+	      var benchesToAdd = this._benchesToAdd(benches);
 	      benchesToAdd.forEach(function (bench) {
-	        _this.createMarkerFromBench(bench);
+	        _this._createMarkerFromBench(bench);
+	      });
+	
+	      var markersToRemove = this._markersToRemove();
+	      markersToRemove.forEach(function (marker) {
+	        _this._removeMarker(marker);
 	      });
 	    }
 	  }, {
 	    key: "_benchesToAdd",
-	    value: function _benchesToAdd(benches) {
+	    value: function _benchesToAdd() {
 	      var mapBenchIds = this.markers.map(function (marker) {
 	        return marker.benchId;
 	      });
@@ -26891,75 +26950,41 @@
 	
 	      var newMarker = new google.maps.Marker({
 	        position: markerPos,
-	        map: this.map
+	        map: this.map,
+	        benchId: bench.id
 	      });
 	
 	      this.markers.push(newMarker);
 	    }
 	  }, {
 	    key: "_markersToRemove",
-	    value: function _markersToRemove() {}
+	    value: function _markersToRemove() {
+	      var persistingMarkers = [];
+	      var benchIds = this.benches.map(function (bench) {
+	        return bench.id;
+	      });
+	
+	      this.markers.forEach(function (marker) {
+	        if (!benchIds.includes(marker.benchId)) {
+	          persistingMarkers.push(marker);
+	        }
+	      });
+	
+	      return persistingMarkers;
+	    }
 	  }, {
 	    key: "_removeMarker",
-	    value: function _removeMarker() {}
+	    value: function _removeMarker(marker) {
+	      var idx = this.markers.indexOf(marker);
+	      this.markers[idx].setMap(null);
+	      this.markers = this.markers.slice(0, idx).concat(this.markers.slice(idx + 1, this.markers.length));
+	    }
 	  }]);
 	
 	  return MarkerManager;
 	}();
 	
 	exports.default = MarkerManager;
-
-/***/ },
-/* 317 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var FilterConstants = exports.FilterConstants = {
-	  UPDATE_BOUNDS: "UPDATE_BOUNDS"
-	};
-	
-	var updateBounds = exports.updateBounds = function updateBounds(value) {
-	  return {
-	    type: FilterConstants.UPDATE_BOUNDS,
-	    value: value
-	  };
-	};
-
-/***/ },
-/* 318 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _filter_actions = __webpack_require__(317);
-	
-	var _merge = __webpack_require__(190);
-	
-	var _merge2 = _interopRequireDefault(_merge);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var FilterReducer = function FilterReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? { bounds: {} } : arguments[0];
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case _filter_actions.FilterConstants.UPDATE_BOUNDS:
-	      return { bounds: action.value };
-	    default:
-	      return state;
-	  }
-	};
-	
-	exports.default = FilterReducer;
 
 /***/ }
 /******/ ]);
