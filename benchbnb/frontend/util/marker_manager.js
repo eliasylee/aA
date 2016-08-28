@@ -14,7 +14,7 @@ class MarkerManager {
     })
   }
 
-  _benchesToAdd () {
+  _benchesToAdd (benches) {
     let mapBenchIds = this.markers.map( marker => marker.benchId )
     let newBenches = [];
 
@@ -39,6 +39,14 @@ class MarkerManager {
     })
 
     this.markers.push(newMarker);
+  }
+
+  _markersToRemove () {
+    
+  }
+
+  _removeMarker () {
+
   }
 }
 

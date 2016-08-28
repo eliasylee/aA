@@ -25757,6 +25757,7 @@
 	      switch (action.type) {
 	        case _bench_actions.BenchConstants.REQUEST_BENCHES:
 	          var filters = getState().filters;
+	          debugger;
 	          var success = function success(data) {
 	            return dispatch((0, _bench_actions.receiveBenches)(data));
 	          };
@@ -26797,10 +26798,6 @@
 	      this.map = new google.maps.Map(mapDOMNode, mapOptions);
 	      this.MarkerManager = new _marker_manager2.default(this.map);
 	
-	      google.maps.event.addListener(this.map, 'bounds_changed', function () {
-	        var latLngBounds = _this2.map.getBounds();
-	      });
-	
 	      google.maps.event.addListener(this.map, "idle", function () {
 	        var map = _this2.map;
 	        var latLngBounds = map.getBounds();
@@ -26812,9 +26809,7 @@
 	          "southWest": { "lat": '' + southWest.lat(), "lng": '' + southWest.lng() }
 	        };
 	
-	        debugger;
-	
-	        _this2.props.updateBounds('bounds', bounds);
+	        _this2.props.updateBounds(bounds);
 	        _this2.MarkerManager.updateMarkers(_this2.props.benches);
 	      });
 	    }
@@ -26872,7 +26867,7 @@
 	    }
 	  }, {
 	    key: "_benchesToAdd",
-	    value: function _benchesToAdd() {
+	    value: function _benchesToAdd(benches) {
 	      var mapBenchIds = this.markers.map(function (marker) {
 	        return marker.benchId;
 	      });
@@ -26901,6 +26896,12 @@
 	
 	      this.markers.push(newMarker);
 	    }
+	  }, {
+	    key: "_markersToRemove",
+	    value: function _markersToRemove() {}
+	  }, {
+	    key: "_removeMarker",
+	    value: function _removeMarker() {}
 	  }]);
 	
 	  return MarkerManager;
@@ -26921,10 +26922,9 @@
 	  UPDATE_BOUNDS: "UPDATE_BOUNDS"
 	};
 	
-	var updateBounds = exports.updateBounds = function updateBounds(filter, value) {
+	var updateBounds = exports.updateBounds = function updateBounds(value) {
 	  return {
 	    type: FilterConstants.UPDATE_BOUNDS,
-	    filter: filter,
 	    value: value
 	  };
 	};
@@ -26947,25 +26947,13 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	var defaultState = {
-	  benches: {},
-	  filters: {
-	    bounds: {}
-	  }
-	};
-	
 	var FilterReducer = function FilterReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? defaultState : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? { bounds: {} } : arguments[0];
 	  var action = arguments[1];
 	
 	  switch (action.type) {
 	    case _filter_actions.FilterConstants.UPDATE_BOUNDS:
-	      debugger;
-	      var newFilter = _defineProperty({}, action.filter, action.value);
-	      var newState = (0, _merge2.default)({}, state, newFilter);
-	      return newState;
+	      return { bounds: action.value };
 	    default:
 	      return state;
 	  }
