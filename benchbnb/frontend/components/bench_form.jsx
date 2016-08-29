@@ -4,8 +4,8 @@ class BenchForm extends React.Component {
   constructor (props) {
     super(props);
     this.coords = {
-      lat: props.lat,
-      lng: props.lng
+      lat: this.props.lat,
+      lng: this.props.lng
     }
   }
 

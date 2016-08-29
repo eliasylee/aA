@@ -26632,9 +26632,9 @@
 	
 	var _search_container2 = _interopRequireDefault(_search_container);
 	
-	var _bench_form = __webpack_require__(382);
+	var _bench_form_container = __webpack_require__(383);
 	
-	var _bench_form2 = _interopRequireDefault(_bench_form);
+	var _bench_form_container2 = _interopRequireDefault(_bench_form_container);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -26646,7 +26646,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _app2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _search_container2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/benches/new', component: _bench_form2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: '/benches/new', component: _bench_form_container2.default })
 	    )
 	  );
 	};
@@ -32663,8 +32663,8 @@
 	    var _this = _possibleConstructorReturn(this, (BenchForm.__proto__ || Object.getPrototypeOf(BenchForm)).call(this, props));
 	
 	    _this.coords = {
-	      lat: props.lat,
-	      lng: props.lng
+	      lat: _this.props.lat,
+	      lng: _this.props.lng
 	    };
 	    return _this;
 	  }
@@ -32725,6 +32725,43 @@
 	}(_react2.default.Component);
 	
 	exports.default = BenchForm;
+
+/***/ },
+/* 383 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _reactRedux = __webpack_require__(304);
+	
+	var _bench_form = __webpack_require__(382);
+	
+	var _bench_form2 = _interopRequireDefault(_bench_form);
+	
+	var _bench_actions = __webpack_require__(189);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  return {
+	    lat: ownProps.location.query.lat,
+	    lng: ownProps.location.query.lng
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    createBench: function createBench(bench) {
+	      return dispatch((0, _bench_actions.createBench)(bench));
+	    }
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(_bench_form2.default);
 
 /***/ }
 /******/ ]);
