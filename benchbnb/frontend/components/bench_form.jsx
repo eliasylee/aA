@@ -1,31 +1,40 @@
 import React from 'react';
 
 class BenchForm extends React.Component {
+  constructor (props) {
+    super(props);
+    this.coords = {
+      lat: props.lat,
+      lng: props.lng
+    }
+  }
+
   render () {
     return (
-      <div>
+      <div className="bench-form-container">
         <h1>Create Bench</h1>
-        <form>
-          <label>
-            Description
+          <form className="bench-form">
+            <label>Description</label>
             <textarea id="bench-description"></textarea>
-          </label>
-          <br/>
-          <label>
-            Number of Seats
+            <br/>
+
+            <label>Number of Seats</label>
             <input id="bench-seat-number"></input>
-          </label>
-          <br/>
-          <label>
-            Latitude
-            <input id="bench-latitude"></input>
-          </label>
-          <br/>
-          <label>
-            Longitude
-            <input id="bench-longitude"></input>
-          </label>
-        </form>
+            <br/>
+
+            <label>Latitude</label>
+            <input id="bench-latitude"
+                   type="text"
+                   value={this.coords.lat}
+                   disabled />
+            <br/>
+
+            <label>Longitude</label>
+            <input id="bench-longitude"
+                   type="text"
+                   value={this.coords.lng}
+                   disabled />
+          </form>
       </div>
     )
   }
