@@ -26807,6 +26807,8 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	var _reactRouter = __webpack_require__(321);
+	
 	var _marker_manager = __webpack_require__(318);
 	
 	var _marker_manager2 = _interopRequireDefault(_marker_manager);
@@ -26863,6 +26865,14 @@
 	      this.MarkerManager.updateMarkers(this.props.benches);
 	    }
 	  }, {
+	    key: '_handleClick',
+	    value: function _handleClick(coords) {
+	      this.props.router.push({
+	        pathname: "benches/new",
+	        query: coords
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement('div', { id: 'map-container', ref: 'map' });
@@ -26872,7 +26882,7 @@
 	  return BenchMap;
 	}(_react2.default.Component);
 	
-	exports.default = BenchMap;
+	exports.default = (0, _reactRouter.withRouter)(BenchMap);
 
 /***/ },
 /* 318 */
@@ -27003,6 +27013,10 @@
 	
 	var _search_container2 = _interopRequireDefault(_search_container);
 	
+	var _bench_form = __webpack_require__(382);
+	
+	var _bench_form2 = _interopRequireDefault(_bench_form);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var AppRouter = function AppRouter() {
@@ -27012,7 +27026,8 @@
 	    _react2.default.createElement(
 	      _reactRouter.Route,
 	      { path: '/', component: _app2.default },
-	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _search_container2.default })
+	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _search_container2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/benches/new', component: _bench_form2.default })
 	    )
 	  );
 	};
@@ -32587,6 +32602,90 @@
 	
 	exports.default = (0, _createRouterHistory2.default)(_createHashHistory2.default);
 	module.exports = exports['default'];
+
+/***/ },
+/* 382 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BenchForm = function (_React$Component) {
+	  _inherits(BenchForm, _React$Component);
+	
+	  function BenchForm() {
+	    _classCallCheck(this, BenchForm);
+	
+	    return _possibleConstructorReturn(this, (BenchForm.__proto__ || Object.getPrototypeOf(BenchForm)).apply(this, arguments));
+	  }
+	
+	  _createClass(BenchForm, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        null,
+	        _react2.default.createElement(
+	          "h1",
+	          null,
+	          "Create Bench"
+	        ),
+	        _react2.default.createElement(
+	          "form",
+	          null,
+	          _react2.default.createElement(
+	            "label",
+	            null,
+	            "Description",
+	            _react2.default.createElement("textarea", { id: "bench-description" })
+	          ),
+	          _react2.default.createElement("br", null),
+	          _react2.default.createElement(
+	            "label",
+	            null,
+	            "Number of Seats",
+	            _react2.default.createElement("input", { id: "bench-seat-number" })
+	          ),
+	          _react2.default.createElement("br", null),
+	          _react2.default.createElement(
+	            "label",
+	            null,
+	            "Latitude",
+	            _react2.default.createElement("input", { id: "bench-latitude" })
+	          ),
+	          _react2.default.createElement("br", null),
+	          _react2.default.createElement(
+	            "label",
+	            null,
+	            "Longitude",
+	            _react2.default.createElement("input", { id: "bench-longitude" })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return BenchForm;
+	}(_react2.default.Component);
+	
+	exports.default = BenchForm;
 
 /***/ }
 /******/ ]);
