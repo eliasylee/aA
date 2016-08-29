@@ -8,9 +8,9 @@ class BenchIndex extends React.Component {
 
     return (
       <section className="benchIndex">
-        { benches.map( bench => {
+        { Object.keys(benches).map( key => {
           return (
-            < BenchIndexItem key={bench.id} bench={bench} />
+            < BenchIndexItem key={key} bench={benches[key]} />
           );
         })}
       </section>

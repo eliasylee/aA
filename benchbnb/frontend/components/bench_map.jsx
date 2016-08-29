@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import MarkerManager from '../util/marker_manager';
 
 class BenchMap extends React.Component {
-  componentDidMount () {
+  componentDidMount () {    
     const mapDOMNode = this.refs.map;
     const mapOptions = {
       center: {lat: 37.7758, lng: -122.435},

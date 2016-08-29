@@ -8,12 +8,12 @@ class Api::BenchesController < ApplicationController
   def create
     @bench = Bench.create!(bench_params)
 
-    render json: @benches
+    render json: @bench
   end
 
   private
 
   def bench_params
-    params.require(:bench).permit(:description, :lat, :lng)
+    params.require(:bench).permit(:description, :seats, :lat, :lng)
   end
 end

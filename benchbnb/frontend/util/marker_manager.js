@@ -9,7 +9,10 @@ class MarkerManager {
   }
 
   updateMarkers (benches) {
-    this.benches = benches;
+    let benchKeys = Object.keys(benches);
+    this.benches = benchKeys.map( key => {
+      return benches[key];
+    });
 
     let benchesToAdd = this._benchesToAdd(benches);
     benchesToAdd.forEach( bench => {

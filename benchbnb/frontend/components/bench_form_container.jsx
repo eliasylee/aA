@@ -8,9 +8,10 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createBench: bench => dispatch(createBench(bench))
+  createBench: bench => dispatch(createBench({ bench }))
 })
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(BenchForm);

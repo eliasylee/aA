@@ -7,10 +7,11 @@ export const fetchBenches = function (filters, success) {
   });
 };
 
-export const createBench = function (success) {
+export const createBench = function (bench, success) {
   $.ajax({
     method: 'POST',
     url: 'api/benches',
+    data: bench,
     success
-  })
-}
+  });
+};

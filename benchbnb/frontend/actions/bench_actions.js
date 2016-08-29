@@ -14,8 +14,9 @@ export const receiveBenches = benches => ({
   benches
 });
 
-export const createBench = () => ({
-  type: BenchConstants.CREATE_BENCH
+export const createBench = (bench) => ({
+  type: BenchConstants.CREATE_BENCH,
+  bench
 })
 
 export const receiveBench = bench => ({

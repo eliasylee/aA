@@ -22345,13 +22345,22 @@
 	
 	var _merge = __webpack_require__(190);
 	
+	var _merge2 = _interopRequireDefault(_merge);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	var BenchesReducer = function BenchesReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	  var action = arguments[1];
 	
 	  switch (action.type) {
 	    case _bench_actions.BenchConstants.RECEIVE_BENCHES:
 	      return action.benches;
+	    case _bench_actions.BenchConstants.RECEIVE_BENCH:
+	      var newBench = _defineProperty({}, action.bench.id, action.bench);
+	      return (0, _merge2.default)({}, state, newBench);
 	    default:
 	      return state;
 	  }
@@ -22388,9 +22397,10 @@
 	  };
 	};
 	
-	var createBench = exports.createBench = function createBench() {
+	var createBench = exports.createBench = function createBench(bench) {
 	  return {
-	    type: BenchConstants.CREATE_BENCH
+	    type: BenchConstants.CREATE_BENCH,
+	    bench: bench
 	  };
 	};
 	
@@ -25819,14 +25829,20 @@
 	      switch (action.type) {
 	        case _bench_actions.BenchConstants.REQUEST_BENCHES:
 	          var filters = getState().filters;
-	          var success = function success(data) {
+	          var requestSuccess = function requestSuccess(data) {
 	            return dispatch((0, _bench_actions.receiveBenches)(data));
 	          };
-	          (0, _bench_api_util.fetchBenches)(filters, success);
+	          (0, _bench_api_util.fetchBenches)(filters, requestSuccess);
 	          break;
 	        case _filter_actions.FilterConstants.UPDATE_BOUNDS:
 	          next(action);
 	          dispatch((0, _bench_actions.requestBenches)());
+	          break;
+	        case _bench_actions.BenchConstants.CREATE_BENCH:
+	          var createSuccess = function createSuccess(data) {
+	            return dispatch((0, _bench_actions.receiveBench)(data));
+	          };
+	          (0, _bench_api_util.createBench)(action.bench, createSuccess);
 	          break;
 	        default:
 	          return next(action);
@@ -25855,10 +25871,11 @@
 	  });
 	};
 	
-	var createBench = exports.createBench = function createBench(success) {
+	var createBench = exports.createBench = function createBench(bench, success) {
 	  $.ajax({
 	    method: 'POST',
 	    url: 'api/benches',
+	    data: bench,
 	    success: success
 	  });
 	};
@@ -26632,7 +26649,7 @@
 	
 	var _search_container2 = _interopRequireDefault(_search_container);
 	
-	var _bench_form_container = __webpack_require__(383);
+	var _bench_form_container = __webpack_require__(382);
 	
 	var _bench_form_container2 = _interopRequireDefault(_bench_form_container);
 	
@@ -32315,8 +32332,8 @@
 	      return _react2.default.createElement(
 	        'section',
 	        { className: 'benchIndex' },
-	        benches.map(function (bench) {
-	          return _react2.default.createElement(_bench_index_item2.default, { key: bench.id, bench: bench });
+	        Object.keys(benches).map(function (key) {
+	          return _react2.default.createElement(_bench_index_item2.default, { key: key, bench: benches[key] });
 	        })
 	      );
 	    }
@@ -32556,7 +32573,10 @@
 	    value: function updateMarkers(benches) {
 	      var _this = this;
 	
-	      this.benches = benches;
+	      var benchKeys = Object.keys(benches);
+	      this.benches = benchKeys.map(function (key) {
+	        return benches[key];
+	      });
 	
 	      var benchesToAdd = this._benchesToAdd(benches);
 	      benchesToAdd.forEach(function (bench) {
@@ -32634,7 +32654,44 @@
 /* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _reactRedux = __webpack_require__(304);
+	
+	var _bench_form = __webpack_require__(383);
+	
+	var _bench_form2 = _interopRequireDefault(_bench_form);
+	
+	var _bench_actions = __webpack_require__(189);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  return {
+	    lat: ownProps.location.query.lat,
+	    lng: ownProps.location.query.lng
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    createBench: function createBench(bench) {
+	      return dispatch((0, _bench_actions.createBench)({ bench: bench }));
+	    }
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_bench_form2.default);
+
+/***/ },
+/* 383 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -32646,7 +32703,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(314);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -32666,56 +32727,92 @@
 	      lat: _this.props.lat,
 	      lng: _this.props.lng
 	    };
+	    _this.state = {
+	      description: "",
+	      seats: 0,
+	      lat: _this.props.lat,
+	      lng: _this.props.lng
+	    };
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.redirectToMap = _this.redirectToMap.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(BenchForm, [{
-	    key: "render",
+	    key: 'update',
+	    value: function update(property) {
+	      var _this2 = this;
+	
+	      return function (e) {
+	        return _this2.setState(_defineProperty({}, property, e.target.value));
+	      };
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+	      var bench = Object.assign({}, this.state, this.coords);
+	      this.props.createBench(bench);
+	      this.redirectToMap();
+	    }
+	  }, {
+	    key: 'redirectToMap',
+	    value: function redirectToMap() {
+	      this.props.router.push({
+	        pathname: "/"
+	      });
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "bench-form-container" },
+	        'div',
+	        { className: 'bench-form-container' },
 	        _react2.default.createElement(
-	          "h1",
+	          'h1',
 	          null,
-	          "Create Bench"
+	          'Create Bench'
 	        ),
 	        _react2.default.createElement(
-	          "form",
-	          { className: "bench-form" },
+	          'form',
+	          { className: 'bench-form', onSubmit: this.handleSubmit },
 	          _react2.default.createElement(
-	            "label",
+	            'label',
 	            null,
-	            "Description"
+	            'Description'
 	          ),
-	          _react2.default.createElement("textarea", { id: "bench-description" }),
-	          _react2.default.createElement("br", null),
+	          _react2.default.createElement('textarea', { id: 'bench-description',
+	            onChange: this.update("description") }),
+	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
-	            "label",
+	            'label',
 	            null,
-	            "Number of Seats"
+	            'Number of Seats'
 	          ),
-	          _react2.default.createElement("input", { id: "bench-seat-number" }),
-	          _react2.default.createElement("br", null),
+	          _react2.default.createElement('input', { id: 'bench-seat-number',
+	            onChange: this.update("seats") }),
+	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
-	            "label",
+	            'label',
 	            null,
-	            "Latitude"
+	            'Latitude'
 	          ),
-	          _react2.default.createElement("input", { id: "bench-latitude",
-	            type: "text",
+	          _react2.default.createElement('input', { id: 'bench-latitude',
+	            type: 'text',
 	            value: this.coords.lat,
 	            disabled: true }),
-	          _react2.default.createElement("br", null),
+	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
-	            "label",
+	            'label',
 	            null,
-	            "Longitude"
+	            'Longitude'
 	          ),
-	          _react2.default.createElement("input", { id: "bench-longitude",
-	            type: "text",
+	          _react2.default.createElement('input', { id: 'bench-longitude',
+	            type: 'text',
 	            value: this.coords.lng,
-	            disabled: true })
+	            disabled: true }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('input', { type: 'submit', value: 'Create Bench', className: 'new-bench-button' })
 	        )
 	      );
 	    }
@@ -32724,44 +32821,7 @@
 	  return BenchForm;
 	}(_react2.default.Component);
 	
-	exports.default = BenchForm;
-
-/***/ },
-/* 383 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _reactRedux = __webpack_require__(304);
-	
-	var _bench_form = __webpack_require__(382);
-	
-	var _bench_form2 = _interopRequireDefault(_bench_form);
-	
-	var _bench_actions = __webpack_require__(189);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var mapStateToProps = function mapStateToProps(state, ownProps) {
-	  return {
-	    lat: ownProps.location.query.lat,
-	    lng: ownProps.location.query.lng
-	  };
-	};
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  return {
-	    createBench: function createBench(bench) {
-	      return dispatch((0, _bench_actions.createBench)(bench));
-	    }
-	  };
-	};
-	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(_bench_form2.default);
+	exports.default = (0, _reactRouter.withRouter)(BenchForm);
 
 /***/ }
 /******/ ]);
