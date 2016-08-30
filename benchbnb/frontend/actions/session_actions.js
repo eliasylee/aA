@@ -16,10 +16,11 @@ export const logout = () => ({
 });
 
 export const signup = user => ({
-  type: SessionConstants.SIGNUP
+  type: SessionConstants.SIGNUP,
+  user
 });
 
-export const receiveCurrentuser = currentUser => ({
+export const receiveCurrentUser = currentUser => ({
   type: SessionConstants.RECEIVE_CURRENT_USER,
   currentUser
 });

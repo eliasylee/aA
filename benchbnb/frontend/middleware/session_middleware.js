@@ -1,10 +1,10 @@
 import { SessionConstants,
-         receiveCurrentuser,
+         receiveCurrentUser,
          receiveErrors } from '../actions/session_actions';
 import { logIn, logOut, signUp } from '../util/session_api_util';
 
 const SessionMiddleware = ({ getState, dispatch }) => next => action => {
-  const newCurrentUserSuccess = data => dispatch(receiveCurrentuser(data));
+  const newCurrentUserSuccess = data => dispatch(receiveCurrentUser(data));
   const errors = (data) => dispatch(receiveErrors(data.responseJSON));
 
   switch (action.type) {
