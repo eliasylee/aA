@@ -67,6 +67,7 @@
 	document.addEventListener('DOMContentLoaded', function () {
 	  var store = (0, _store2.default)();
 	  var root = document.getElementById('root');
+	
 	  _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: store }), root);
 	});
 
@@ -25799,9 +25800,13 @@
 	
 	var _benches_middleware2 = _interopRequireDefault(_benches_middleware);
 	
+	var _session_middleware = __webpack_require__(384);
+	
+	var _session_middleware2 = _interopRequireDefault(_session_middleware);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var RootMiddleware = (0, _redux.applyMiddleware)(_benches_middleware2.default);
+	var RootMiddleware = (0, _redux.applyMiddleware)(_benches_middleware2.default, _session_middleware2.default);
 	
 	exports.default = RootMiddleware;
 
@@ -32822,6 +32827,141 @@
 	}(_react2.default.Component);
 	
 	exports.default = (0, _reactRouter.withRouter)(BenchForm);
+
+/***/ },
+/* 384 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _session_actions = __webpack_require__(385);
+	
+	var _session_api_util = __webpack_require__(386);
+	
+	var SessionMiddleware = function SessionMiddleware(_ref) {
+	  var getState = _ref.getState;
+	  var dispatch = _ref.dispatch;
+	  return function (next) {
+	    return function (action) {
+	      var newCurrentUserSuccess = function newCurrentUserSuccess(data) {
+	        return dispatch((0, _session_actions.receiveCurrentuser)(data));
+	      };
+	      var errors = function errors(data) {
+	        return dispatch((0, _session_actions.receiveErrors)(data.responseJSON));
+	      };
+	
+	      switch (action.type) {
+	        case _session_actions.SessionConstants.LOGIN:
+	          (0, _session_api_util.logIn)(action.user, newCurrentUserSuccess, errors);
+	          return next(action);
+	        case _session_actions.SessionConstants.SIGNUP:
+	          (0, _session_api_util.signUp)(action.user, newCurrentUserSuccess, errors);
+	          return next(action);
+	        case _session_actions.SessionConstants.LOGOUT:
+	          (0, _session_api_util.logOut)(function () {
+	            return next(action);
+	          }, errors);
+	          break;
+	        default:
+	          return next(action);
+	      }
+	    };
+	  };
+	};
+	
+	exports.default = SessionMiddleware;
+
+/***/ },
+/* 385 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var SessionConstants = exports.SessionConstants = {
+	  LOGIN: "LOGIN",
+	  LOGOUT: "LOGOUT",
+	  SIGNUP: "SIGNUP",
+	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER",
+	  RECEIVE_ERRORS: "RECEIVE_ERRORS"
+	};
+	
+	var login = exports.login = function login(user) {
+	  return {
+	    type: SessionConstants.LOGIN,
+	    user: user
+	  };
+	};
+	
+	var logout = exports.logout = function logout() {
+	  return {
+	    type: SessionConstants.LOGOUT
+	  };
+	};
+	
+	var signup = exports.signup = function signup(user) {
+	  return {
+	    type: SessionConstants.SIGNUP
+	  };
+	};
+	
+	var receiveCurrentuser = exports.receiveCurrentuser = function receiveCurrentuser(currentUser) {
+	  return {
+	    type: SessionConstants.RECEIVE_CURRENT_USER,
+	    currentUser: currentUser
+	  };
+	};
+	
+	var receiveErrors = exports.receiveErrors = function receiveErrors(errors) {
+	  return {
+	    type: SessionConstants.RECEIVE_ERRORS,
+	    errors: errors
+	  };
+	};
+
+/***/ },
+/* 386 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var signUp = exports.signUp = function signUp(user, success, error) {
+	  $.ajax({
+	    method: 'POST',
+	    url: '/api/users',
+	    data: user,
+	    success: success,
+	    error: error
+	  });
+	};
+	
+	var logIn = exports.logIn = function logIn(user, success, error) {
+	  $.ajax({
+	    method: 'POST',
+	    url: '/api/session',
+	    data: user,
+	    success: success,
+	    error: error
+	  });
+	};
+	
+	var logOut = exports.logOut = function logOut(success, error) {
+	  $.ajax({
+	    method: 'DELETE',
+	    url: '/api/session',
+	    success: success,
+	    error: error
+	  });
+	};
 
 /***/ }
 /******/ ]);
