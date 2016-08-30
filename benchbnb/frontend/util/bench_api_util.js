@@ -1,4 +1,4 @@
-export const fetchBenches = function (filters, success) {
+export const fetchBenches = (filters, success) => {
   $.ajax({
     method: 'GET',
     url: 'api/benches',
@@ -7,7 +7,7 @@ export const fetchBenches = function (filters, success) {
   });
 };
 
-export const createBench = function (bench, success) {
+export const createBench = (bench, success) => {
   $.ajax({
     method: 'POST',
     url: 'api/benches',
