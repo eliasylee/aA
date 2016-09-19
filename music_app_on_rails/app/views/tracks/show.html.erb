@@ -1,0 +1,20 @@
+<a href="<%= band_url(@track.album.band) %>">
+  <font color="orange" size="30"> <%= @track.album.band.name %> </font>
+</a>
+
+<br>
+
+<a href="<%= album_url(@track.album) %>">
+  <font color="green" size="20"> <%= @track.album.name %> </font>
+</a>
+
+<h1> <%= @track.name %> </h1>
+
+<%= button_to "Edit Track", edit_album_track_url(params[:id], @track.id), method: :get %>
+<%= button_to "Delete Track", track_url(params[:id]), method: :delete %>
+<br>
+<font size="10">Lyrics:</font>
+<br>
+<%= "<pre>#{h(@track.lyrics).split("\n").map { |line| "&#9835 " + line }.join("\n")}</pre>".html_safe %>
+<%= render "/notes/form", track: @track %>
+<%= render "/notes/note", track: @track %>
