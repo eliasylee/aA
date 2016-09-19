@@ -1,0 +1,44 @@
+<%= button_to "Back to Reports", user_url(current_user.id), method: :get %>
+
+<h1><%= @report.name %></h1>
+
+<%= button_to "Edit Report", edit_report_url(@report), method: :get %>
+
+<h3> New Transaction </h3>
+<%= render "transactions/form", transaction: Transaction.new, report: @report %>
+
+<h3>Transactions:</h3>
+
+<table>
+  <% total_cost = 0 %>
+  <tr>
+    <td>Date</td>
+    <td>Location</td>
+    <td>Item</td>
+    <td>Cost</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <% transactions = @report.transactions.sort_by { |trans| trans.transaction_date }.reverse %>
+  <% transactions.each do |transaction| %>
+    <% total_cost += transaction.cost %>
+    <tr>
+      <td><%= transaction.transaction_date %></td>
+      <td><%= transaction.location %></td>
+      <td><%= transaction.item %></td>
+      <td><%= transaction.cost %></td>
+      <td>
+        <%= button_to "Edit", edit_transaction_url(transaction), method: :get %>
+      </td>
+      <td>
+        <%= button_to "Delete", transaction_url(transaction), method: :delete %>
+      </td>
+    </tr>
+  <% end %>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>Total:</td>
+      <td><%= total_cost %></td>
+    </tr>
+</table>
